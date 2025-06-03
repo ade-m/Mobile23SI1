@@ -35,6 +35,8 @@ public class ProfilActivity extends AppCompatActivity {
         edtMobile = findViewById(R.id.edtMobile);
         edtBisnis = findViewById(R.id.edtBisnis);
 
+        edtNama.setText(getIntent().getStringExtra("nama").toString());
+
         btnBersihkan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,5 +88,11 @@ public class ProfilActivity extends AppCompatActivity {
        else if(nilai>60)  return 2.75;
        else if(nilai>50)  return 2.5;
        else return 0.0;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
     }
 }
