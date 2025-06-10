@@ -25,7 +25,42 @@
             android:ems="10"
             android:inputType="text"
             android:hint="Nama"/>
+        <TextView
+            android:id="@+id/textView21"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Jenis Kelamin" />
 
+        <RadioGroup
+            android:id="@+id/rdgJenisKelamin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rdbLaki"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Laki-laki" />
+
+            <RadioButton
+                android:id="@+id/rdbPerempuan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Perempuan" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/textView22"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Program Studi" />
+        <Spinner
+            android:id="@+id/sprProdi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
         <EditText
             android:id="@+id/edtProdi"
             android:layout_width="match_parent"
@@ -54,6 +89,26 @@
             android:ems="10"
             android:inputType="number"
             android:hint="Nilai Pemrograman Aplikasi Bergerak"/>
+
+        <TextView
+            android:id="@+id/textView01"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Hobi" />
+
+        <CheckBox
+            android:id="@+id/chbMancing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mancing" />
+
+        <CheckBox
+            android:id="@+id/chbMakan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Makan" />
+
         <Button
             android:id="@+id/btnSimpan"
             android:layout_width="match_parent"

@@ -2,8 +2,13 @@ package edu.uph.m23si1.aplikasipertama;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -16,6 +21,10 @@ public class ProfilActivity extends AppCompatActivity {
     Button btnSimpan,btnBersihkan;
     EditText edtNama,edtProdi,edtMobile,edtBisnis;
     TextView txvHasil;
+    RadioButton rdbLaki, rdbPerempuan;
+    RadioGroup rdgJenisKelamin;
+    CheckBox chbMancing, chbMakan;
+    Spinner sprProdi;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,15 +36,21 @@ public class ProfilActivity extends AppCompatActivity {
             return insets;
         });
 
-        btnSimpan = findViewById(R.id.btnSimpan);
-        btnBersihkan = findViewById(R.id.btnBersihkan);
-        edtNama = findViewById(R.id.edtNama);
-        edtProdi = findViewById(R.id.edtProdi);
-        txvHasil = findViewById(R.id.txvHasil);
-        edtMobile = findViewById(R.id.edtMobile);
-        edtBisnis = findViewById(R.id.edtBisnis);
+        initVariable();
 
-        edtNama.setText(getIntent().getStringExtra("nama").toString());
+        // Create an ArrayAdapter using the string array and a default spinner layout.
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.prodi_array,
+                android.R.layout.simple_spinner_item
+        );
+
+        // Specify the layout to use when the list of choices appears.
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Apply the adapter to the spinner.
+        sprProdi.setAdapter(adapter);
+
 
         btnBersihkan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,14 +66,46 @@ public class ProfilActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String nama = edtNama.getText().toString();
-                String prodi = edtProdi.getText().toString();
+                String prodi = sprProdi.getSelectedItem().toString();
+                String jenisKelamin="";
+                String hobi="";
                 int nilaiBisnis = Integer.parseInt(edtBisnis.getText().toString());
                 int nilaiMobile = Integer.parseInt(edtMobile.getText().toString());
-                txvHasil.setText(nama+"\nIPK "+getIPK(nilaiBisnis,nilaiMobile).toString()+"\n"+prodi
+
+                if(rdbLaki.isChecked()) jenisKelamin=rdbLaki.getText().toString();
+                else if(rdbPerempuan.isChecked()) jenisKelamin=rdbPerempuan.getText().toString();
+
+                if(chbMancing.isChecked()) hobi+=chbMancing.getText().toString()+";";
+                if(chbMakan.isChecked()) hobi+=chbMakan.getText().toString()+";";
+
+                txvHasil.setText(nama
+                        +"\nJenis Kelamin "+ jenisKelamin
+                        +"\nIPK "+getIPK(nilaiBisnis,nilaiMobile).toString()
+                        +"\n"+prodi
                         +"\n"+getNamaFakultas(prodi)+
-                        "\n"+"Universitas Pelita Harapan");
+                        "\n"+"Universitas Pelita Harapan"
+                        +"\nHobi "+hobi);
             }
         });
+    }
+
+    public void initVariable(){
+        //inisialisasi variabel
+        btnSimpan = findViewById(R.id.btnSimpan);
+        btnBersihkan = findViewById(R.id.btnBersihkan);
+        edtNama = findViewById(R.id.edtNama);
+        edtProdi = findViewById(R.id.edtProdi);
+        txvHasil = findViewById(R.id.txvHasil);
+        edtMobile = findViewById(R.id.edtMobile);
+        edtBisnis = findViewById(R.id.edtBisnis);
+        rdgJenisKelamin = findViewById(R.id.rdgJenisKelamin);
+        rdbLaki = findViewById(R.id.rdbLaki);
+        rdbPerempuan = findViewById(R.id.rdbPerempuan);
+        chbMakan = findViewById(R.id.chbMakan);
+        chbMancing = findViewById(R.id.chbMancing);
+        sprProdi = (Spinner) findViewById(R.id.sprProdi);
+
+        edtNama.setText(getIntent().getStringExtra("nama").toString());
     }
     String getNamaFakultas(String prodi){
         String namaProdi = prodi.toLowerCase();
