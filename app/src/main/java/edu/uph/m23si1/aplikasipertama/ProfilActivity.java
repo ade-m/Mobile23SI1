@@ -1,6 +1,9 @@
 package edu.uph.m23si1.aplikasipertama;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -27,7 +30,7 @@ public class ProfilActivity extends AppCompatActivity {
     Spinner sprProdi;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /// 
+        ///
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_profil);
@@ -66,28 +69,46 @@ public class ProfilActivity extends AppCompatActivity {
         btnSimpan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String nama = edtNama.getText().toString();
-                String prodi = sprProdi.getSelectedItem().toString();
-                String jenisKelamin="";
-                String hobi="";
-                int nilaiBisnis = Integer.parseInt(edtBisnis.getText().toString());
-                int nilaiMobile = Integer.parseInt(edtMobile.getText().toString());
-
-                if(rdbLaki.isChecked()) jenisKelamin=rdbLaki.getText().toString();
-                else if(rdbPerempuan.isChecked()) jenisKelamin=rdbPerempuan.getText().toString();
-
-                if(chbMancing.isChecked()) hobi+=chbMancing.getText().toString()+";";
-                if(chbMakan.isChecked()) hobi+=chbMakan.getText().toString()+";";
-
-                txvHasil.setText(nama
-                        +"\nJenis Kelamin "+ jenisKelamin
-                        +"\nIPK "+getIPK(nilaiBisnis,nilaiMobile).toString()
-                        +"\n"+prodi
-                        +"\n"+getNamaFakultas(prodi)+
-                        "\n"+"Universitas Pelita Harapan"
-                        +"\nHobi "+hobi);
+                simpan();
             }
         });
+    }
+    public boolean isValidasiData(){
+        if(edtBisnis.getText().toString().equals("")){
+            edtBisnis.setError("Nilai bisnis harus di isi");
+            return false;
+        }else if(edtMobile.getText().toString().equals("")){
+            edtMobile.setError("Nilai mobile harus di isi");
+            return false;
+        }else if(edtNama.getText().toString().equals("")){
+            edtNama.setError("Nama harus di isi");
+            return false;
+        }
+        return true;
+    }
+    public void simpan(){
+        if(isValidasiData()) {
+            String nama = edtNama.getText().toString();
+            String prodi = sprProdi.getSelectedItem().toString();
+            String jenisKelamin = "";
+            String hobi = "";
+            int nilaiBisnis = Integer.parseInt(edtBisnis.getText().toString());
+            int nilaiMobile = Integer.parseInt(edtMobile.getText().toString());
+
+            if (rdbLaki.isChecked()) jenisKelamin = rdbLaki.getText().toString();
+            else if (rdbPerempuan.isChecked()) jenisKelamin = rdbPerempuan.getText().toString();
+
+            if (chbMancing.isChecked()) hobi += chbMancing.getText().toString() + ";";
+            if (chbMakan.isChecked()) hobi += chbMakan.getText().toString() + ";";
+
+            txvHasil.setText(nama
+                    + "\nJenis Kelamin " + jenisKelamin
+                    + "\nIPK " + getIPK(nilaiBisnis, nilaiMobile).toString()
+                    + "\n" + prodi
+                    + "\n" + getNamaFakultas(prodi) +
+                    "\n" + "Universitas Pelita Harapan"
+                    + "\nHobi " + hobi);
+        }
     }
 
     public void initVariable(){
@@ -143,4 +164,22 @@ public class ProfilActivity extends AppCompatActivity {
         super.onStart();
 
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_profil, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection.
+        if(item.getItemId()== R.id.mSimpan){
+           simpan();
+           return true;
+        }else{
+            return super.onOptionsItemSelected(item);
+        }
+
+    }
+
 }
