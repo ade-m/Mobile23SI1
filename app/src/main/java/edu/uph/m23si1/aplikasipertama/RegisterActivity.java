@@ -1,6 +1,8 @@
 package edu.uph.m23si1.aplikasipertama;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -14,9 +16,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 public class RegisterActivity extends AppCompatActivity {
     Button btnRegister;
     EditText edtName;
+    SharedPreferences sharedPref;
+    SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +34,16 @@ public class RegisterActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        Realm.init(this);
+        RealmConfiguration config = new RealmConfiguration.Builder()
+                .name("default.realm")
+                .schemaVersion(1)
+                .allowWritesOnUiThread(true) // sementara aktifkan untuk demo
+                .deleteRealmIfMigrationNeeded()
+                .build();
+        Realm.setDefaultConfiguration(config);
+
         edtName = findViewById(R.id.edtName);
         btnRegister = findViewById(R.id.btnRegister);
         btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -37,6 +54,10 @@ public class RegisterActivity extends AppCompatActivity {
                 toDashboard();
             }
         });
+
+        //inisialisasi
+        sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        editor = sharedPref.edit();
     }
     public void toProfil(){
         String nama = edtName.getText().toString();
@@ -47,6 +68,10 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void toDashboard(){
         String nama = edtName.getText().toString();
+
+        editor.putString(getString(R.string.username_key), nama);
+        editor.apply();
+
         Intent intent = new Intent(this, DashboardActivity.class);
         intent.putExtra("nama",nama);
         startActivity(intent);

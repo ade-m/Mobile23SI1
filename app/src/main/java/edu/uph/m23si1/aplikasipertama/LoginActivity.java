@@ -1,5 +1,7 @@
 package edu.uph.m23si1.aplikasipertama;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -20,5 +22,6 @@ public class LoginActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
     }
 }

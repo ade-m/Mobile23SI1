@@ -13,12 +13,16 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import edu.uph.m23si1.aplikasipertama.model.Mahasiswa;
+import io.realm.Realm;
 
 public class ProfilActivity extends AppCompatActivity {
     Button btnSimpan,btnBersihkan;
@@ -100,6 +104,8 @@ public class ProfilActivity extends AppCompatActivity {
 
             if (chbMancing.isChecked()) hobi += chbMancing.getText().toString() + ";";
             if (chbMakan.isChecked()) hobi += chbMakan.getText().toString() + ";";
+            String hobi2 = hobi;
+            String jk = jenisKelamin;
 
             txvHasil.setText(nama
                     + "\nJenis Kelamin " + jenisKelamin
@@ -108,6 +114,21 @@ public class ProfilActivity extends AppCompatActivity {
                     + "\n" + getNamaFakultas(prodi) +
                     "\n" + "Universitas Pelita Harapan"
                     + "\nHobi " + hobi);
+
+            Realm realm = Realm.getDefaultInstance();
+            realm.executeTransaction(r -> {
+                Number maxId = r.where(Mahasiswa.class).max("idMahasiswa");
+                int nextId = (maxId == null) ? 1 : maxId.intValue() + 1;
+                Mahasiswa mhs = r.createObject(Mahasiswa.class, nextId);
+                mhs.setNama(nama);
+                mhs.setProdi(prodi);
+                mhs.setHobi(hobi2);
+                mhs.setJenisKelamin(jk);
+                mhs.setNilaiBisnis(nilaiBisnis);
+                mhs.setNilaiMobile(nilaiMobile);
+            });
+            Toast.makeText(this, "Data tersimpan", Toast.LENGTH_SHORT).show();
+
         }
     }
 
