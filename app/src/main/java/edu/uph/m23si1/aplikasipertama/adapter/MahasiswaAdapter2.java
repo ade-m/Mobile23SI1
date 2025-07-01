@@ -1,12 +1,14 @@
 package edu.uph.m23si1.aplikasipertama.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +16,7 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
+import edu.uph.m23si1.aplikasipertama.ProfilActivity;
 import edu.uph.m23si1.aplikasipertama.R;
 import edu.uph.m23si1.aplikasipertama.model.Mahasiswa;
 
@@ -49,6 +52,17 @@ public class MahasiswaAdapter2 extends ArrayAdapter<Mahasiswa> {
         TextView textView2 = currentItemView.findViewById(R.id.txvProdi);
         textView2.setText(currentNumberPosition.getProdi());
 
+        LinearLayout llyItemMahasiswa =  currentItemView.findViewById(R.id.llyItemMahasiswa);
+        llyItemMahasiswa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ProfilActivity.class);
+                intent.putExtra("nama", currentNumberPosition.getNama()); // passing nama
+                getContext().startActivity(intent);
+            }
+        });
+
         return currentItemView;
     }
+
 }

@@ -6,7 +6,8 @@
     android:paddingBottom="10dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
-    android:paddingTop="10dp">
+    android:paddingTop="10dp"
+    android:id="@+id/llyItemMahasiswa">
     <ImageView
         android:id="@+id/imvMahasiswa"
         android:layout_width="60dp"
