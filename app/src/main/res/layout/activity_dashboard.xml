@@ -68,6 +68,7 @@
                     android:src="@drawable/user2"/>
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/llyListMahasiswa"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 android:orientation="horizontal"
@@ -86,7 +87,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="12pt"
-                        android:text="Todo List"/>
+                        android:text="List Mahasiswa"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -97,7 +98,13 @@
                     android:layout_height="90dp"
                     android:src="@drawable/menu1"/>
             </LinearLayout>
+
         </LinearLayout>
+
+        <ListView
+            android:id="@+id/lsvMahasiswa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
