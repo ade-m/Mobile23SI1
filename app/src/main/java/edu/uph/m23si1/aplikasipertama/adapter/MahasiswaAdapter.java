@@ -54,5 +54,13 @@ public class MahasiswaAdapter extends ArrayAdapter<Mahasiswa> {
 
         // then return the recyclable view
         return currentItemView;
+//        adapter.updateData(updatedResults);
     }
+
+//    public void updateData(RealmResults<Mahasiswa> newData) {
+//        this.data = newData;
+//        notifyDataSetChanged();
+//    }
+
+
 }

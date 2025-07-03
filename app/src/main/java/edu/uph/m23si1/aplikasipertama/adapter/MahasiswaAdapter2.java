@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import edu.uph.m23si1.aplikasipertama.ProfilActivity;
 import edu.uph.m23si1.aplikasipertama.R;
 import edu.uph.m23si1.aplikasipertama.model.Mahasiswa;
+import io.realm.Realm;
 
 public class MahasiswaAdapter2 extends ArrayAdapter<Mahasiswa> {
     public MahasiswaAdapter2(@NonNull Context context, ArrayList<Mahasiswa> arrayList) {
@@ -60,6 +61,22 @@ public class MahasiswaAdapter2 extends ArrayAdapter<Mahasiswa> {
                 intent.putExtra("idMahasiswa", currentNumberPosition.getIdMahasiswa());
                 intent.putExtra("mode","edit");
                 getContext().startActivity(intent);
+            }
+        });
+
+        ImageView imvDelete = currentItemView.findViewById(R.id.imvDelete);
+        imvDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Realm  realm = Realm.getDefaultInstance();
+                realm.executeTransaction(r -> {
+                    Mahasiswa mhs = r.where(Mahasiswa.class)
+                            .equalTo("idMahasiswa", currentNumberPosition.getIdMahasiswa())
+                            .findFirst();
+                    if (mhs != null) {
+                        mhs.deleteFromRealm();
+                    }
+                });
             }
         });
 

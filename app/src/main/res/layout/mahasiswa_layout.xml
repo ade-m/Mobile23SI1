@@ -32,4 +32,11 @@
             android:textSize="8pt"
             android:text="Program Studi"/>
     </LinearLayout>
+    <ImageView
+        android:id="@+id/imvDelete"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/bin"
+        android:paddingLeft="20dp"
+        />
 </LinearLayout>
