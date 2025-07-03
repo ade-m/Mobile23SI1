@@ -21,8 +21,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.ArrayList;
+
 import edu.uph.m23si1.aplikasipertama.model.Mahasiswa;
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class ProfilActivity extends AppCompatActivity {
     Button btnSimpan,btnBersihkan;
@@ -32,6 +35,9 @@ public class ProfilActivity extends AppCompatActivity {
     RadioGroup rdgJenisKelamin;
     CheckBox chbMancing, chbMakan;
     Spinner sprProdi;
+    Realm realm;
+    Mahasiswa mhs;
+    ArrayAdapter<CharSequence> adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ///
@@ -45,21 +51,6 @@ public class ProfilActivity extends AppCompatActivity {
         });
 
         initVariable();
-
-        // Create an ArrayAdapter using the string array and a default spinner layout.
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this,
-                R.array.prodi_array,
-                android.R.layout.simple_spinner_item
-        );
-
-        // Specify the layout to use when the list of choices appears.
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // Apply the adapter to the spinner.
-        sprProdi.setAdapter(adapter);
-
-
         btnBersihkan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,7 +139,41 @@ public class ProfilActivity extends AppCompatActivity {
         chbMancing = findViewById(R.id.chbMancing);
         sprProdi = (Spinner) findViewById(R.id.sprProdi);
 
-        edtNama.setText(getIntent().getStringExtra("nama").toString());
+        adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.prodi_array,
+                android.R.layout.simple_spinner_item
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sprProdi.setAdapter(adapter);
+
+        realm = Realm.getDefaultInstance();
+
+        if(getIntent().getStringExtra("mode").toString().equals("edit")){
+            btnSimpan.setText("Ubah Data");
+            int idmahasiswa = getIntent().getIntExtra("idMahasiswa",0);
+            mhs = realm.where(Mahasiswa.class).equalTo("idMahasiswa",idmahasiswa).findFirst();
+            if(mhs != null){
+                edtNama.setText(mhs.getNama());
+                edtProdi.setText(mhs.getProdi());
+                edtBisnis.setText(Integer.toString(mhs.getNilaiBisnis()));
+                edtMobile.setText(Integer.toString(mhs.getNilaiMobile()));
+                if(mhs.getJenisKelamin().equals("Perempuan")) rdbPerempuan.setChecked(true);
+                else rdbLaki.setChecked(true);
+
+                String[] hobi = mhs.getHobi().split(";");
+                for (String h : hobi) {
+                    if(h.equals("Mancing")) chbMancing.setChecked(true);
+                    else if (h.equals("Makan")) chbMakan.setChecked(true);
+                }
+
+                int posisi = adapter.getPosition(mhs.getProdi());
+                sprProdi.setSelection(posisi);
+            }
+        }
+        else if(getIntent().getStringExtra("mode").toString().equals("create")){
+            btnSimpan.setText("Simpan Data");
+        }
     }
     String getNamaFakultas(String prodi){
         String namaProdi = prodi.toLowerCase();

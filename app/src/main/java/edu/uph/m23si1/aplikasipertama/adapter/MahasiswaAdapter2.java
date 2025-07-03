@@ -47,7 +47,7 @@ public class MahasiswaAdapter2 extends ArrayAdapter<Mahasiswa> {
         assert currentNumberPosition != null;
 
         TextView textView1 = currentItemView.findViewById(R.id.txvNama);
-        textView1.setText(currentNumberPosition.getNama());
+        textView1.setText(currentNumberPosition.getNama() + "-" + currentNumberPosition.getIdMahasiswa());
 
         TextView textView2 = currentItemView.findViewById(R.id.txvProdi);
         textView2.setText(currentNumberPosition.getProdi());
@@ -57,7 +57,8 @@ public class MahasiswaAdapter2 extends ArrayAdapter<Mahasiswa> {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ProfilActivity.class);
-                intent.putExtra("nama", currentNumberPosition.getNama()); // passing nama
+                intent.putExtra("idMahasiswa", currentNumberPosition.getIdMahasiswa());
+                intent.putExtra("mode","edit");
                 getContext().startActivity(intent);
             }
         });

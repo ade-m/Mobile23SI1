@@ -50,23 +50,24 @@ public class DashboardActivity extends AppCompatActivity {
         });
 
         txvHasil = findViewById(R.id.txvHasil);
-        Realm realm = Realm.getDefaultInstance();
-
-
-        final ArrayList<Mahasiswa> arrayList = new ArrayList<>();
-        RealmResults<Mahasiswa> results = realm.where(Mahasiswa.class).findAll();
-        if (results != null) {
-            arrayList.addAll(realm.copyFromRealm(results));
-        }
-
-        MahasiswaAdapter numbersArrayAdapter = new MahasiswaAdapter(this, arrayList);
-        ListView numbersListView = findViewById(R.id.lsvMahasiswa);
-        numbersListView.setAdapter(numbersArrayAdapter);
+//        Realm realm = Realm.getDefaultInstance();
+//
+//
+//        final ArrayList<Mahasiswa> arrayList = new ArrayList<>();
+//        RealmResults<Mahasiswa> results = realm.where(Mahasiswa.class).findAll();
+//        if (results != null) {
+//            arrayList.addAll(realm.copyFromRealm(results));
+//        }
+//
+//        MahasiswaAdapter numbersArrayAdapter = new MahasiswaAdapter(this, arrayList);
+//        ListView numbersListView = findViewById(R.id.lsvMahasiswa);
+//        numbersListView.setAdapter(numbersArrayAdapter);
     }
     public void toProfil(){
         String nama = getIntent().getStringExtra("nama");
         Intent intent = new Intent(this, ProfilActivity.class);
         intent.putExtra("nama",nama);
+        intent.putExtra("mode","create");
         startActivity(intent);
     }
 
