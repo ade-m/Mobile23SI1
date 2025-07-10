@@ -116,7 +116,9 @@ public class RegisterActivity extends AppCompatActivity {
         daftarMahasiswa.add(new Mahasiswa("Makan", 8, "Laki-laki", "Joko", 55, 60, "Sistem Informasi"));
         daftarMahasiswa.add(new Mahasiswa("Makan", 9, "Perempuan", "Maya", 78, 82, "Sistem Informasi"));
         daftarMahasiswa.add(new Mahasiswa("Makan", 10, "Perempuan", "Dewi", 90, 95, "Informatika"));
-// Masukkan ke Realm
+        daftarMahasiswa.add(new Mahasiswa("Makan", 11, "Perempuan", "Dewa", 90, 95, "Manajemen"));
+
+        // Masukkan ke Realm
         realm.executeTransaction(r -> {
             r.insert(daftarMahasiswa);
         });
