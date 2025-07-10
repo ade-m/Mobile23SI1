@@ -16,8 +16,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import edu.uph.m23si1.aplikasipertama.model.Mahasiswa;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import io.realm.RealmResults;
 
 public class RegisterActivity extends AppCompatActivity {
     Button btnRegister;
@@ -37,12 +39,13 @@ public class RegisterActivity extends AppCompatActivity {
 
         Realm.init(this);
         RealmConfiguration config = new RealmConfiguration.Builder()
-                .name("default.realm")
+                .name("mahasiswa2.realm")
                 .schemaVersion(1)
                 .allowWritesOnUiThread(true) // sementara aktifkan untuk demo
                 .deleteRealmIfMigrationNeeded()
                 .build();
         Realm.setDefaultConfiguration(config);
+        initData();
 
         edtName = findViewById(R.id.edtName);
         btnRegister = findViewById(R.id.btnRegister);
@@ -58,6 +61,45 @@ public class RegisterActivity extends AppCompatActivity {
         //inisialisasi
         sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         editor = sharedPref.edit();
+    }
+    public void initData(){
+//        Mahasiswa mhs = new Mahasiswa("Makan;",10,"Perempuan","Susan",
+//                50,50,"Hukum");
+        Realm realm = Realm.getDefaultInstance();
+/// Kosongkan data dulu
+        realm.executeTransaction(r -> {
+            RealmResults<Mahasiswa> mhs = r.where(Mahasiswa.class)
+                    .findAll();
+            if (mhs != null) {
+                for (Mahasiswa mahasiswa: mhs) {
+                    mahasiswa.deleteFromRealm();
+                }
+            }
+        });
+/// Masukkan data
+        realm.executeTransaction(r -> {
+            Number maxId = r.where(Mahasiswa.class).max("idMahasiswa");
+            int nextId = (maxId == null) ? 1 : maxId.intValue() + 1;
+            Mahasiswa mhs2 = r.createObject(Mahasiswa.class, nextId);
+            mhs2.setNama("Budi");
+            mhs2.setProdi("Hukum");
+            mhs2.setHobi("Makan;");
+            mhs2.setJenisKelamin("Perempuan");
+            mhs2.setNilaiBisnis(50);
+            mhs2.setNilaiMobile(70);
+        });
+
+        realm.executeTransaction(r -> {
+            Number maxId = r.where(Mahasiswa.class).max("idMahasiswa");
+            int nextId = (maxId == null) ? 1 : maxId.intValue() + 1;
+            Mahasiswa mhs2 = r.createObject(Mahasiswa.class, nextId);
+            mhs2.setNama("Budi Susan");
+            mhs2.setProdi("Hukum");
+            mhs2.setHobi("Makan;");
+            mhs2.setJenisKelamin("Perempuan");
+            mhs2.setNilaiBisnis(50);
+            mhs2.setNilaiMobile(70);
+        });
     }
     public void toProfil(){
         String nama = edtName.getText().toString();

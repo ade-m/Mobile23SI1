@@ -3,6 +3,8 @@ package edu.uph.m23si1.aplikasipertama.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.renderscript.RenderScript;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +39,7 @@ public class MahasiswaAdapter2 extends ArrayAdapter<Mahasiswa> {
 
         Mahasiswa currentNumberPosition = getItem(position);
 
+        assert currentNumberPosition != null;
         ImageView numbersImage = currentItemView.findViewById(R.id.imvMahasiswa);
         if (currentNumberPosition.getJenisKelamin().equals("Perempuan")){
             numbersImage.setImageResource(R.drawable.user3);
@@ -45,7 +48,6 @@ public class MahasiswaAdapter2 extends ArrayAdapter<Mahasiswa> {
             numbersImage.setImageResource(R.drawable.user2);
         }
 
-        assert currentNumberPosition != null;
 
         TextView textView1 = currentItemView.findViewById(R.id.txvNama);
         textView1.setText(currentNumberPosition.getNama() + "-" + currentNumberPosition.getIdMahasiswa());
