@@ -16,6 +16,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.uph.m23si1.aplikasipertama.model.Mahasiswa;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -77,28 +80,45 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 /// Masukkan data
-        realm.executeTransaction(r -> {
-            Number maxId = r.where(Mahasiswa.class).max("idMahasiswa");
-            int nextId = (maxId == null) ? 1 : maxId.intValue() + 1;
-            Mahasiswa mhs2 = r.createObject(Mahasiswa.class, nextId);
-            mhs2.setNama("Budi");
-            mhs2.setProdi("Hukum");
-            mhs2.setHobi("Makan;");
-            mhs2.setJenisKelamin("Perempuan");
-            mhs2.setNilaiBisnis(50);
-            mhs2.setNilaiMobile(70);
-        });
+//        realm.executeTransaction(r -> {
+//            Number maxId = r.where(Mahasiswa.class).max("idMahasiswa");
+//            int nextId = (maxId == null) ? 1 : maxId.intValue() + 1;
+//            Mahasiswa mhs2 = r.createObject(Mahasiswa.class, nextId);
+//            mhs2.setNama("Budi");
+//            mhs2.setProdi("Hukum");
+//            mhs2.setHobi("Makan;");
+//            mhs2.setJenisKelamin("Perempuan");
+//            mhs2.setNilaiBisnis(50);
+//            mhs2.setNilaiMobile(70);
+//        });
+//
+//        realm.executeTransaction(r -> {
+//            Number maxId = r.where(Mahasiswa.class).max("idMahasiswa");
+//            int nextId = (maxId == null) ? 1 : maxId.intValue() + 1;
+//            Mahasiswa mhs2 = r.createObject(Mahasiswa.class, nextId);
+//            mhs2.setNama("Budi Susan");
+//            mhs2.setProdi("Hukum");
+//            mhs2.setHobi("Makan;");
+//            mhs2.setJenisKelamin("Perempuan");
+//            mhs2.setNilaiBisnis(50);
+//            mhs2.setNilaiMobile(70);
+//        });
 
+        List<Mahasiswa> daftarMahasiswa = new ArrayList<>();
+
+        daftarMahasiswa.add(new Mahasiswa("Makan", 1, "Perempuan", "Budi", 50, 70, "Hukum"));
+        daftarMahasiswa.add(new Mahasiswa("Makan", 2, "Laki-laki", "Andi", 65, 75, "Sistem Informasi"));
+        daftarMahasiswa.add(new Mahasiswa("Makan", 3, "Perempuan", "Siti", 80, 85, "Sistem Informasi"));
+        daftarMahasiswa.add(new Mahasiswa("Makan", 4, "Perempuan", "Dina", 75, 90, "Sistem Informasi"));
+        daftarMahasiswa.add(new Mahasiswa("Makan", 5, "Laki-laki", "Rudi", 60, 65, "Informatika"));
+        daftarMahasiswa.add(new Mahasiswa("Makan", 6, "Laki-laki", "Tono", 70, 72, "Informatika"));
+        daftarMahasiswa.add(new Mahasiswa("Makan", 7, "Perempuan", "Lisa", 88, 93, "Sistem Informasi"));
+        daftarMahasiswa.add(new Mahasiswa("Makan", 8, "Laki-laki", "Joko", 55, 60, "Sistem Informasi"));
+        daftarMahasiswa.add(new Mahasiswa("Makan", 9, "Perempuan", "Maya", 78, 82, "Sistem Informasi"));
+        daftarMahasiswa.add(new Mahasiswa("Makan", 10, "Perempuan", "Dewi", 90, 95, "Informatika"));
+// Masukkan ke Realm
         realm.executeTransaction(r -> {
-            Number maxId = r.where(Mahasiswa.class).max("idMahasiswa");
-            int nextId = (maxId == null) ? 1 : maxId.intValue() + 1;
-            Mahasiswa mhs2 = r.createObject(Mahasiswa.class, nextId);
-            mhs2.setNama("Budi Susan");
-            mhs2.setProdi("Hukum");
-            mhs2.setHobi("Makan;");
-            mhs2.setJenisKelamin("Perempuan");
-            mhs2.setNilaiBisnis(50);
-            mhs2.setNilaiMobile(70);
+            r.insert(daftarMahasiswa);
         });
     }
     public void toProfil(){
