@@ -19,9 +19,13 @@ import androidx.core.view.WindowInsetsCompat;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.uph.m23si1.aplikasipertama.model.Krs;
+import edu.uph.m23si1.aplikasipertama.model.KrsDetail;
 import edu.uph.m23si1.aplikasipertama.model.Mahasiswa;
+import edu.uph.m23si1.aplikasipertama.model.Matakuliah;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import io.realm.RealmList;
 import io.realm.RealmResults;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -103,6 +107,30 @@ public class RegisterActivity extends AppCompatActivity {
 //            mhs2.setNilaiBisnis(50);
 //            mhs2.setNilaiMobile(70);
 //        });
+
+        List<Matakuliah> daftarMatakuliah = new ArrayList<>();
+        daftarMatakuliah.add(new Matakuliah(1,"KO 2024",
+                "Pemrograman Aplikasi Bergerak",3));
+        daftarMatakuliah.add(new Matakuliah(2,"KO 2024",
+                "Pemrograman IoT",3));
+        daftarMatakuliah.add(new Matakuliah(3,"KO 2024",
+                "Teknologi Imersive",3));
+
+        realm.executeTransaction(r -> {
+            r.insert(daftarMatakuliah);
+        });
+
+        List<KrsDetail> daftarKrsDetail = new ArrayList<>();
+        daftarKrsDetail.add(new KrsDetail(1,daftarMatakuliah.get(0)));//Pemrograman Aplikasi Bergerak
+        daftarKrsDetail.add(new KrsDetail(2,daftarMatakuliah.get(1)));//Pemrograman IoT
+        daftarKrsDetail.add(new KrsDetail(3,daftarMatakuliah.get(2)));//Teknologi Imersive
+
+        realm.executeTransaction(r -> {
+            r.insert(daftarKrsDetail);
+        });
+        RealmList<KrsDetail> krsDetails = new RealmList<>();
+        krsDetails.addAll(realm.copyToRealm(daftarKrsDetail));
+        Krs krs = new Krs(1,krsDetails,"Sistem Informasi","2024/2025");
 
         List<Mahasiswa> daftarMahasiswa = new ArrayList<>();
 

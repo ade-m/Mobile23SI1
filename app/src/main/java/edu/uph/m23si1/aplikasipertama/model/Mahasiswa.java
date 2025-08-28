@@ -1,5 +1,6 @@
 package edu.uph.m23si1.aplikasipertama.model;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -8,6 +9,8 @@ public class Mahasiswa extends RealmObject {
     private int idMahasiswa;
     private String nama,jenisKelamin,prodi,hobi;
     private int nilaiBisnis,nilaiMobile;
+
+    private RealmList<Krs> krss;
 
     public Mahasiswa(){}
 
@@ -20,6 +23,25 @@ public class Mahasiswa extends RealmObject {
         this.nilaiBisnis = nilaiBisnis;
         this.nilaiMobile = nilaiMobile;
         this.prodi = prodi;
+    }
+
+    public Mahasiswa(String hobi, int idMahasiswa, String jenisKelamin, RealmList<Krs> krss, String nama, int nilaiBisnis, int nilaiMobile, String prodi) {
+        this.hobi = hobi;
+        this.idMahasiswa = idMahasiswa;
+        this.jenisKelamin = jenisKelamin;
+        this.krss = krss;
+        this.nama = nama;
+        this.nilaiBisnis = nilaiBisnis;
+        this.nilaiMobile = nilaiMobile;
+        this.prodi = prodi;
+    }
+
+    public RealmList<Krs> getKrss() {
+        return krss;
+    }
+
+    public void setKrss(RealmList<Krs> krss) {
+        this.krss = krss;
     }
 
     public String getHobi() {
