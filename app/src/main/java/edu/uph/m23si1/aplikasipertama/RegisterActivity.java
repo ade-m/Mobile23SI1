@@ -6,8 +6,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -19,20 +22,33 @@ import androidx.core.view.WindowInsetsCompat;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.uph.m23si1.aplikasipertama.api.ApiResponse;
+import edu.uph.m23si1.aplikasipertama.api.ApiService;
 import edu.uph.m23si1.aplikasipertama.model.Krs;
 import edu.uph.m23si1.aplikasipertama.model.KrsDetail;
 import edu.uph.m23si1.aplikasipertama.model.Mahasiswa;
 import edu.uph.m23si1.aplikasipertama.model.Matakuliah;
+import edu.uph.m23si1.aplikasipertama.model.Provinsi;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmList;
 import io.realm.RealmResults;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RegisterActivity extends AppCompatActivity {
     Button btnRegister;
     EditText edtName;
+    Spinner sprProvinsi;
     SharedPreferences sharedPref;
     SharedPreferences.Editor editor;
+
+    List<Provinsi> provinsiList = new ArrayList<>();
+    ArrayAdapter<String> adapter;
+    List<String> namaProvinsi = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +68,55 @@ public class RegisterActivity extends AppCompatActivity {
                 .deleteRealmIfMigrationNeeded()
                 .build();
         Realm.setDefaultConfiguration(config);
-        initData();
+        //initData();
+
+        sprProvinsi= findViewById(R.id.sprProvinsi);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,namaProvinsi);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        sprProvinsi.setAdapter(adapter);
+
+        //setup retrofit
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://wilayah.id")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        ApiService apiService = retrofit.create(ApiService.class);
+
+        //panggil API
+        apiService.getProvinces().enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                if(response.isSuccessful() && response.body()!=null){
+                    provinsiList = response.body().getData();
+                    namaProvinsi.clear();
+                    for(Provinsi p : provinsiList){
+                        namaProvinsi.add(p.getName());
+                    }
+
+                    adapter.notifyDataSetChanged();
+
+                    sprProvinsi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            Provinsi selected = provinsiList.get(position);
+                            Toast.makeText(RegisterActivity.this,
+                                    "Kode : "+ selected.getCode()+ " Nama Provinsi : "+ selected.getName(),
+                                    Toast.LENGTH_LONG).show();
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                Toast.makeText(RegisterActivity.this,"Gagal : "+ t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
 
         edtName = findViewById(R.id.edtName);
         btnRegister = findViewById(R.id.btnRegister);
