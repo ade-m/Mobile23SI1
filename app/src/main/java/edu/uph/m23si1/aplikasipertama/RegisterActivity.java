@@ -228,7 +228,7 @@ public class RegisterActivity extends AppCompatActivity {
         editor.putString(getString(R.string.username_key), nama);
         editor.apply();
 
-        Intent intent = new Intent(this, DashboardActivity.class);
+        Intent intent = new Intent(this, AddPasienActivity.class);
         intent.putExtra("nama",nama);
         startActivity(intent);
     }
